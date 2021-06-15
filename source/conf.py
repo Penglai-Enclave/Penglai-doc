@@ -56,3 +56,28 @@ exclude_patterns = []
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+master_doc = 'index'
+
+# from recommonmark.parser import CommonMarkParser
+# source_parsers = {
+#     '.md': CommonMarkParser,
+# }
+source_suffix = ['.rst', '.md']
+
+extensions = [
+    'myst_parser'
+]
+
+# extensions = ['myst_parser']
+
+# import recommonmark
+# from recommonmark.transform import AutoStructify
+
+# # At the bottom of conf.py
+# def setup(app):
+#     app.add_config_value('recommonmark_config', {
+#             'url_resolver': lambda url: github_doc_root + url,
+#             'auto_toc_tree_section': 'Contents',
+#             }, True)
+#     app.add_transform(AutoStructify)
