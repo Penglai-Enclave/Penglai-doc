@@ -11,9 +11,7 @@ sphinx:
 
 # Optionally set the version of Python and requirements required to build your docs
 python:
-  version: 3.7
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - myst-parser
+   version: 3.7
+   install:
+   - requirements: source/requirements.txt
+
