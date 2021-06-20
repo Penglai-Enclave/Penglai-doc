@@ -30,32 +30,22 @@ Penglai contains a set of systems satisfying different scenarios.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Getting Started:
+   :caption: Getting Started
 
    Getting-started/intro.rst
 
 .. toctree::
    :maxdepth: 1
-   :caption: Tutorials:
+   :caption: Tutorials
 
+   Tutorials/Tutorial-index.rst
    
 
 .. toctree::
    :maxdepth: 1
-   :caption: Penglai manual:
+   :caption: Penglai manual
 
    Penglai-manual/User-Manual-TVM
    Penglai-manual/User-Manual-PMP
    Penglai-manual/Penglai-Opensbi-Extension-API
 
-.. totr
-   Penglai-Opensbi-Extension-API
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

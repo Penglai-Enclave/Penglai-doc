@@ -1,4 +1,4 @@
-# User manual for Penglai-tvm
+# User manual for Penglai-TVM
 
 ### Introduction
 

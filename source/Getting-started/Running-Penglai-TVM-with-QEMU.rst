@@ -1,5 +1,5 @@
 Running Penglai-TVM with QEMU
-==========================
+==============================
 
 Environment requirement
 ------------------------
@@ -15,6 +15,7 @@ Get source code
 The source code of Penglai-TVM is available, click `here <https://github.com/Penglai-Enclave/Penglai-Enclave-TVM>`_ to jump to our git repo.
 You can clone our project with the following script.
 ::
+
   git clone https://github.com/Penglai-Enclave/Penglai-Enclave-TVM.git
 
 Building
@@ -23,10 +24,12 @@ Enter the penglai-enclave directory, cd ``Penglai-Enclave-TVM``
 
 And then,
 :: 
+
   git submodule update --init --recursive
 
 Last, build penglai using our Docker image:
 ::
+
   ./docker_cmd.sh build
 
 When the building process finished, you are ready to run penglai.

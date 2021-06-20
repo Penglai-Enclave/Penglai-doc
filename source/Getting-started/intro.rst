@@ -25,3 +25,13 @@ Penglai enclave can support multiple platforms:
     Running-Penglai-TVM-with-QEMU.rst
     Running-Penglai-TVM-with-FPGABoard.rst
 
+User manual
+------------
+In Penglai-TVM manual, it defines all interfaces you can use in host application and enclaves.
+More details can be found in the following doc:
+
+* :doc:`Penglai-TVM-Manual </Penglai-manual/User-Manual-TVM>`
+* :doc:`Penglai-PMP-Manual </Penglai-manual/User-Manual-PMP>`
+
+
+

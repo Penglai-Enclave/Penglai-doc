@@ -209,12 +209,12 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
 
   | Macro               | Function ID (a7) | Argument                                                     |
   | ------------------- | ---------------- | ------------------------------------------------------------ |
-  | SBI_EXIT_ENCLAVE    | 1                | **arg0**: return value                                       |
-  | SBI_ENCLAVE_OCALL   | 2                | **arg0**: ocall_id<br />**arg1...**: the ocall arguments     |
-  | SBI_ACQUIRE_ENCLAVE | 3                | **arg0**: The acquired enclave name                          |
-  | SBI_CALL_ENCLAVE    | 4                | **arg0**: The callee enclave id<br />**arg1**: IPC struct    |
-  | SBI_ENCLAVE_RETURN  | 5                | **arg0**: IPC struct                                         |
-  | SBI_GET_REPORT      | 11               | **arg0**: the attested enclave name<br />**arg1**: attestation report<br />**arg2**: nonce |
+  | SBI_EXIT_ENCLAVE    | 99                | **arg0**: return value                                       |
+  | SBI_ENCLAVE_OCALL   | 98                | **arg0**: ocall_id<br />**arg1...**: the ocall arguments     |
+  | SBI_ACQUIRE_ENCLAVE | 97                | **arg0**: The acquired enclave name                          |
+  | SBI_CALL_ENCLAVE    | 96                | **arg0**: The callee enclave id<br />**arg1**: IPC struct    |
+  | SBI_ENCLAVE_RETURN  | 95                | **arg0**: IPC struct                                         |
+  | SBI_GET_REPORT      | 94               | **arg0**: the attested enclave name<br />**arg1**: attestation report<br />**arg2**: nonce |
 
   **SBI_EXIT_ENCLAVE （FID #1）**
 
