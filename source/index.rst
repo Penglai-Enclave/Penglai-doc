@@ -45,7 +45,7 @@ Penglai contains a set of systems satisfying different scenarios.
    :maxdepth: 1
    :caption: Penglai manual
 
+   Penglai-manual/Penglai-Opensbi-Extension-API
    Penglai-manual/User-Manual-TVM
    Penglai-manual/User-Manual-PMP
-   Penglai-manual/Penglai-Opensbi-Extension-API
 

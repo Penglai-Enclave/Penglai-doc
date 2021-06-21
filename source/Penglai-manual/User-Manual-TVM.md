@@ -2,9 +2,9 @@
 
 ### Introduction
 
-This doc introduces how to create an enclave in the Penglai-TVM, including the configuration of enclave parameters, the usage of enclave-related/host-related interfaces, etc.
+This doc introduces how to create or customize an enclave in the Penglai-TVM, such as how to configure the enclave parameters and what is the usage of each enclave-side/host-side interface, etc.
 
-Penglai-TVM is a pure software enclave design on RISC-V, which realizes fine-grained and scalable enclave management.
+Penglai-TVM is a scalable enclave system on RISC-V, which realizes the fine-grained and scalable memory management. We leverage the RISC-V feature: Trap Virtual Memory to implement the Guard Page Table with pure software design. More details of Guard Page Table can be found in our OSDI paper: "Scalable memory protection in PENGLAI Enclave".
 
 ### File Structure
 
@@ -61,7 +61,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
   int PLenclave_run(struct PLenclave *PLenclave)
   ```
 
-  +  Description: Run the enclave.
+  + Description: Run an enclave, this function will not return unless (1) enclave is finished, stopped or destroyed, (2) enclave triggers an ocall which needs to be handled in the user mode (host).
   + Parameter:
     + PLenclave: Enclave structure used in the host program.
 
@@ -92,7 +92,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
   int PLenclave_resume(struct PLenclave *PLenclave)
   ```
 
-  + Description: Resume a stopped enclave. The enclave can continue running from the point that it exits last time.
+  + Description: Resume a stopped enclave. An enclave can continue to run from the point it exits last time.
   + Parameter:
     + PLenclave: Enclave structure used in the host program.
   
@@ -102,7 +102,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
   int PLenclave_destroy(struct PLenclave *PLenclave)
   ```
 
-  + Description: Destroy an enclave.  The host can destroy a running enclave compulsorily, e.g., when receiving a kill signal. DoS attacks are out of scope.
+  + Description: Destroy an enclave. The host can destroy a running enclave compulsorily, e.g., when receiving a kill signal. DoS attacks are out of scope.
   + Parameter:
     + PLenclave: Enclave structure used in the host program.
 
@@ -173,10 +173,10 @@ int PLenclave_set_mem_arg(struct PLenclave *enclave, int id, uintptr_t offset, u
 int PLenclave_set_rerun_arg(struct PLenclave *enclave, int rerun_reason)
 ```
 
-+ Description: Set enclave re-run reason.
++ Description: Set the enclave re-run cause in its parameter.
 + Parameter:
   + enclave: Enclave structure used in the host program.
-  + rerun_reason: enclave re-run reason.
+  + rerun_reason: The enlcave re-run cause.
 
 ##### Shared memory
 
@@ -200,7 +200,7 @@ void* PLenclave_shmat(int shmid, void* addr)
 + Description: Get the shared memory address with the given shmid. Map this shared memory into host VA space.
 + Parameter:
   + shmid: The shared memory identification.
-  + addr: Shared memory address. 0 means shared memory can map at any available virtual address in the VA space of the host.
+  + addr: Shared memory address. 0 (default) means shared memory can map at any available virtual address in the VA space of the host.
 + Return value: the virtual address of the shared memory.
 
 **PLenclave_shmdt**
@@ -224,7 +224,7 @@ int PLenclave_shmctl(int shmid)
 + Parameter:
   + shmid: The shared memory identification.
 
-##### schrodinger page (zero-copy)
+##### Schrodinger/Relay page (Zero-copy mechanism)
 
 **PLenclave_schrodinger_get**
 
@@ -272,7 +272,7 @@ int PLenclave_schrodinger_ctl(int id)
 
 ### Enclave-side interface
 
-#### Libc interface
+#### Libc supported
 
 We have integrated the `musl libc`into the enclave-side library. It can support several unmodified libc interfaces:
 
@@ -302,7 +302,7 @@ Other interfaces like `memset()`,  `memcpy()`, etc, have no interaction with ker
 void EAPP_RETURN(unsigned long retval) __attribute__((noreturn))
 ```
 
-+ Description: Exit the enclave and pass the return value.
++ Description: Exit an enclave and give the return value.
 + Parameter:
   + retval: Return value.
 
@@ -321,7 +321,7 @@ unsigned long get_enclave_id()
 void* eapp_mmap(void* vaddr, unsigned long size)
 ```
 
-+ Description: Allocate the enclave memory and map it in the enclave VA space. These memory can be used as the relay/schrodinger pages (zero-copy communication between enclaves).
++ Description: Allocate the enclave memory and map it in the enclave VA space. These memory can be used as the relay pages in enclave (zero-copy communication between enclaves).
 + Parameter:
   + vaddr: Must set NULL in the current version.
   + size: Memory mapping size 
@@ -333,7 +333,7 @@ void* eapp_mmap(void* vaddr, unsigned long size)
 int eapp_unmap(void* vaddr, unsigned long size)
 ```
 
-+ Description: Unmap the enclave memory. The unmapped memory must be allocated by the `eapp_mmap()`.
++ Description: Unmap the enclave memory. The unmapped memory must be allocated with the `eapp_mmap()`.
 + Parameter:
   + vaddr: The unmapped memory virtual address.
   + size: Unmapped memory size.
@@ -344,7 +344,7 @@ int eapp_unmap(void* vaddr, unsigned long size)
 unsigned long acquire_enclave(char* name)
 ```
 
-+ Description: Acquire the server enclave handler with the given enclave name. The enclave handler can be used for enclave-enclave communication.
++ Description: Acquire the server enclave handler with the given enclave name. The enclave handler can be used in enclave call.
 + Parameter:
   + name: The enclave name.
 + Return value: Enclave handler.
@@ -366,7 +366,7 @@ int call_enclave(unsigned long handle, struct call_enclave_arg_t* arg)
 int asyn_enclave_call(char* name, struct call_enclave_arg_t *arg)
 ```
 
-+ Description: Asynchronous enclave call. A caller enclave can use this interface to pass the IPC arguments to the callee enclave. The caller enclave will continue to run and callee enclave will receive the IPC arguments when it boots.
++ Description: Asynchronous enclave call. A caller enclave can use this interface to pass the IPC arguments to the callee enclave. The caller enclave will continue to run and callee enclave will receive the IPC arguments when it creates.
 + Parameter:
   + name: The callee enclave name.
   + arg: The IPC structure.
@@ -377,7 +377,7 @@ int asyn_enclave_call(char* name, struct call_enclave_arg_t *arg)
 void SERVER_RETURN(struct call_enclave_arg_t *arg) __attribute__((noreturn))
 ```
 
-+ Description: Callee enclave uses this interface to return to the caller enclave, as well as the return IPC structure.
++ Description: Callee enclave calls this function to return back to the caller enclave, and transfers the return IPC structure in the meantime.
 + Parameter:
   + arg: The IPC structure.
 

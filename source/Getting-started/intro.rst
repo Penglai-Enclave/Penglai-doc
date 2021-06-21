@@ -9,7 +9,7 @@ There are two main series of Penglai enclaves:
 
 + **Penglai-TVM:** 
   It realizes a scalable enclave system with the pure software implementation of Guarded page table (details of guarded page table can be found in our `OSDI paper <https://ipads.se.sjtu.edu.cn/zh/publications/FengOSDI21-preprint.pdf>`_). 
-  With the benefit of our scalable design, Penglai-TVM can realize the scalable memory protection, zero-copy communication and enclave fast boot. You can get the code Penglai-TVM from `here <https://github.com/Penglai-Enclave/Penglai-Enclave-TVM>`_ .
+  With the benefit of our scalable design, Penglai-TVM can realize the scalable memory protection, zero-copy communication and enclave fast boot. You can get the code of Penglai-TVM from `here <https://github.com/Penglai-Enclave/Penglai-Enclave-TVM>`_ .
 
 + **Penglai-PMP**
   It leverages the PMP/sPMP to protect enclave memory. sPMP is our new hardware extension, which will act as RISC-V MPU later (you can find more information in sPMP `white paper <https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP/blob/master/Proposal-of-sPMP.pdf>`_).
@@ -24,6 +24,13 @@ Penglai enclave can support multiple platforms:
  
     Running-Penglai-TVM-with-QEMU.rst
     Running-Penglai-TVM-with-FPGABoard.rst
+    Running-Penglai-PMP-with-QEMU.rst
+
+Tutorial
+----------
+The tutorials for Penglai Enclave, including all basic functions provided by Penglai.
+
+* :doc:`Tutorials <../Tutorials/Tutorial-index>`
 
 User manual
 ------------
