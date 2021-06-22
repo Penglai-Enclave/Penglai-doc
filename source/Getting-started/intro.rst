@@ -28,7 +28,7 @@ Penglai enclave can support multiple platforms:
 
 Tutorial
 ----------
-The tutorials for Penglai Enclave, including all basic functions provided by Penglai.
+The tutorials for Penglai Enclave, which introduce the enclave usages and basic functionalities.
 
 * :doc:`Tutorials <../Tutorials/Tutorial-index>`
 
@@ -39,6 +39,11 @@ More details can be found in the following doc:
 
 * :doc:`Penglai-TVM-Manual </Penglai-manual/User-Manual-TVM>`
 * :doc:`Penglai-PMP-Manual </Penglai-manual/User-Manual-PMP>`
+
+FAQ
+----
+
+* :doc:`Frequently Asked Questions <./FAQ>`
 
 
 

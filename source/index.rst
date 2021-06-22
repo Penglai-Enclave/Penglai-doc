@@ -49,3 +49,9 @@ Penglai contains a set of systems satisfying different scenarios.
    Penglai-manual/User-Manual-TVM
    Penglai-manual/User-Manual-PMP
 
+.. toctree::
+   :maxdepth: 1
+   :caption: FAQ
+
+   Getting-started/FAQ
+
