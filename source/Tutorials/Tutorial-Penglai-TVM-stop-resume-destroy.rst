@@ -5,11 +5,11 @@ This tutorial introduces how to stop resume or destroy enclave. Host can stop or
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -48,3 +48,10 @@ When an enclave is running, another host thread can stop the running enclave, us
 Host can resume the stopped enclave using the ``PLenclave_resume``, the enclave will continue to run from the last stop point. 
 Host can destroy an enclave and reclaim its resource using ``PLenclave_destory``.
 Host can not destroy an enclave which is already exited.
+
+.. attention::
+            
+    ``PLenclave_destroy`` can also destroy the *server enclave* and *shadow enclave*. Before destroying these special types of enclaves, you need to ensure that server enclaves or shadow enclaves will never be invoked later.
+    
+    ``PLenclave_stop`` and ``PLenclave_resume`` can not be used to stop / resume *server enclave* or *shadow enclave*, as they are not the runnable instances.
+

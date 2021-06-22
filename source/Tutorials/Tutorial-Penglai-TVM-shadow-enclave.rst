@@ -1,16 +1,16 @@
 Shadow enclave (Penglai-TVM)
 ==============================
 
-This tutorial introduces the server enclave in Penglai. Server enclave is a special enclave type, it will not run until other enclaves call it.
+This tutorial introduces the server enclave in Penglai. Server enclave is a special type of enclave, it will not run until other enclaves call it.
 With the server enclave, we can implement an enclave chain in the Penglai. Server enclave can act as a separate library or OS server, etc.
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -59,8 +59,8 @@ Host app
     }
 
 We propose the `shadow enclave <https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP>`_ to boost the enclave initialization.
-Creating a shadow enclave is similar to creating a normal enclave, just set enclave type in the creation parameter to the ``SHADOW_ENCLAVE``.
-After creating a shadow enclave, it will return its eid. A forked enclave can use this shadow enclave eid to initialize an enclave instance. 
+Creating a shadow enclave is similar to creating a normal enclave, just setting enclave type in the creation parameter to the ``SHADOW_ENCLAVE``.
+After creating a shadow enclave, it will return its eid. A forked enclave can use this shadow enclave eid to initialize a new enclave instance. 
 
 .. code-block:: c
 

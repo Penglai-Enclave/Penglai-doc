@@ -6,11 +6,11 @@ Penglai supports local attestation, required by host and enclave. Monitor will r
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -64,8 +64,8 @@ Get the attestation report in the host
 
  
 Host can call the ``PLenclave_attest`` function to get the enclave attestation report. The attestation report is composed of device public key, secure monitor report and enclave report.
-Host can authenticate a legal enclave with these attestation reports. Device public key and secure monitor public key are used to verify corresponding signature.
-Nonce is required in the attestation to ensure other can not reuse a stale attestation report. 
+Host can authenticate a legal enclave with the attestation report. Device public key and secure monitor public key are used to verify corresponding signatures.
+Nonce is required in the attestation to ensure others can not reuse a stale attestation report. 
 
 Get the attestation report in the enclave
 -------------------------------------------

@@ -2,16 +2,16 @@ Server enclave (Penglai-TVM)
 ==============================
 
 
-This tutorial introduces the server enclave in Penglai. Server enclave is a special enclave type, it will not run until other enclaves call it.
+This tutorial introduces the server enclave in Penglai. Server enclave is a special type of enclave, it will not run until other enclaves call it.
 With the server enclave, we can implement an enclave chain in the Penglai. Server enclave can act as a separate library or OS server, etc.
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -64,7 +64,7 @@ Host app
             goto out;
         }
 
-The creation of server enclave is similar to the normal enclave. To create a server enclave, you only need to set the enclave type in the enclave creating parameter as the ``SERVER_ENCLAVE``, and assign the server enclave with a unique name.
+The creation of server enclave is similar to the normal enclave. To create a server enclave, you only need to set the enclave type in enclave creating parameter as ``SERVER_ENCLAVE``, and assign the server enclave with a unique name.
 The enclave name is used as the identification when calling this server enclave. 
 
 .. code-block::c
@@ -72,7 +72,7 @@ The enclave name is used as the identification when calling this server enclave.
   server_params->type = SERVER_ENCLAVE;
   strcpy(server_params->name, "test-server");
 
-Host does not need to run the server enclave, and actually, server enclave can not run alone. Server enclave can be caller by other enclaves or server enclaves, and reuse their host context to run.
+Host does not need to run a server enclave, and actually, the server enclave cannot run alone. Server enclave can be called by other enclaves or server enclaves, and reuse their host context.
 
 .. attention::
 
@@ -80,7 +80,7 @@ Host does not need to run the server enclave, and actually, server enclave can n
 
 Host can destroy a server enclave when server enclave is no longer needed, using the following API:
 
-.. code-block::c
+.. code-block:: c
  
   PLenclave_destroy(server1_enclave);
 

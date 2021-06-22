@@ -7,11 +7,11 @@ Enclave app, is the trusted part running in the enclave.
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -145,7 +145,7 @@ Penglai-TVM supports to run multiple enclaves in a single host. So, host can use
 
 There are three basic structures to manipulate an enclave. ``struct elf_args``, ``struct PLenclave`` and ``struct enclave_args``.
 ``struct elf_args`` records the ELF file of given enclave. ``struct PLenclave`` is the primary enclave structure that host will use to create, run an enclave.
-``struct enclave_args`` restores all enclave parameters, which will be used in enclave creation, running, etc.
+``struct enclave_args`` stores all enclave parameters, which will be used in enclave creation, running, etc.
 
 You can use the following APIs to initialize the above structures.
 
@@ -159,16 +159,16 @@ You can use the following APIs to initialize the above structures.
 
 How to run an enclave
 >>>>>>>>>>>>>>>>>>>>>>>>>
-We provide several interfaces to operate an enclave.
+We provide several interfaces to manipulate an enclave.
 
 .. code-block:: c
 
   PLenclave_create(enclave, enclaveFile, params)
 
 We use this interface to create an enclave. Monitor will instantiate an enclave instance and return the corresponding ``eid``.
-With the different parameters, host can create different kinds of enclave: :doc:`shadow enclave <Tutorial-Penglai-TVM-shadow-enclave>`, :doc:`server enclave <Tutorial-Penglai-TVM-server-enclave>`, etc.
+With the different parameters, host can create different kinds of enclaves: :doc:`shadow enclave <Tutorial-Penglai-TVM-shadow-enclave>`, :doc:`server enclave <Tutorial-Penglai-TVM-server-enclave>`, etc.
 
-After the creation, enclave will not be running, until someone has invoked ``PLenclave_run``.
+After the creation, enclave is not running, until someone invokes ``PLenclave_run``.
 
 .. code-block:: c
 
@@ -176,11 +176,8 @@ After the creation, enclave will not be running, until someone has invoked ``PLe
 
 Host invokes this API to run a created enclave. The enclave thread will not return to the host, 
 unless: (1) Enclave has been finished and exited. (2) Enclave does an ocall and needs to return to user-level for handling.
-If an enclave is finished successfully, the return result remains zero.
-
-.. code-block:: c
-
-  result = PLenclave_run(enclave)
+If an enclave is finished successfully, the return result (not return value) remains zero.
+The return value for enclave is stored in the return parameters: ``enclave->user_param.retval``
 
 Enclave app
 --------------
@@ -203,11 +200,11 @@ Enclave app
     }
 
 As for a very simple demo: hello-world running in enclave. It only needs a minor modification for the original program.
-First, you need to include the enclave header file ``eapp.h``, and then, save the enclave context before running.
-You can invoke the macro ``EAPP_RESERVE_REG`` just below the main function. 
+First, you need to include the enclave header file ``eapp.h`` in the enclave source file.
+Second, you need to invoke the macro ``EAPP_RESERVE_REG`` to reserve the enclave context, just before jumping to the real enclave main function. 
 
 We modify the musl lib to support the ``printf`` in enclave. So you can invoke the ``printf`` in the enclave directly.
-This request will be redirected to the host kernel to handle. You can find more details of libc-supported APIs in the :doc:`user manual <../Penglai-manual/User-Manual-TVM>`.
+This request will be redirected to the host kernel to handle. You can find more details on libc-supported APIs in the :doc:`user manual <../Penglai-manual/User-Manual-TVM>` for Penglai-TVM.
 
 
 

@@ -6,11 +6,11 @@ Basically, there are two methods to implement the IPC: the shared buffer and own
 
 Prerequisite
 -------------
-Before running this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
+Before using this tutorial, please make sure you have finished :doc:`getting started <../Getting-started/intro>`.
 
-In current veriosn, we use ramfs as the rootfs, so it needs to build all the files into ramfs (using buildroot). 
-To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added in the initramfs.
-So when machine boots, all these files will be existed in the root.
+In current veriosn, we use ramfs as the rootfs, so it needs to build all files into ramfs previously. 
+To simplify this process, we define a macro ``SDK_FILES``, all the files defined in ``SDK_FILES`` will be added to the initramfs during the build phase.
+When machine boots, all these files are existed in the **root** directory.
 
 Make sure all the requested files in this tutorial are added in the ``SDK_FILES``. 
 
@@ -154,7 +154,7 @@ Host-Enclave IPC
 
 You can get the shared memory and relay page (schrodinger page) in the corresponding registers.
 
-``a0`` and ``a1`` are reserved as the shared memory registers (shared memory bases address and size), and ``a3`` and ``a4`` are reserved for relay page (relay page base address and size).
+``a0`` and ``a1`` are reserved for shared memory (shared memory bases address and size), and ``a3`` and ``a4`` are reserved for relay page (relay page base address and size).
 Enclave can use this memory directly
 
 Enclave-Enclave IPC
