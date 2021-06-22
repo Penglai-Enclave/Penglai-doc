@@ -43,7 +43,8 @@ Enter the ``Penglai-Enclave-TVM`` directory
 
 Typing,
 :: 
-  ./docker_cmd qemu
+  
+    ./docker_cmd qemu
 
 If everything is fine, you will enter a Linux terminal booted by Qemu with Penglai-installed.
 
@@ -51,11 +52,13 @@ Enter the terminal with the user name: ``root``, and passwords: ``penglai``.
 
 **Insmod the enclave-driver**
 :: 
-   sh install.sh
+   
+    sh install.sh
 
 And then, you can run a demo, e.g., a hello-world enclave, using
 ::
-   ./host hello-world
+   
+    ./host hello-world
   
 Here, the host is an enclave invoker, which will start an enclave (name from input).
 

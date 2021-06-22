@@ -21,8 +21,8 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # -- Project information -----------------------------------------------------
 
 project = 'Penglai-Enclave'
-copyright = '2021, Erhu Feng'
-author = 'Erhu Feng'
+copyright = '2021, Penglai-Enclave'
+author = 'Penglai-Enclave'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
