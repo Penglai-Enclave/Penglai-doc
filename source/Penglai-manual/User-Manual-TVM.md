@@ -2,9 +2,9 @@
 
 ### Introduction
 
-This doc introduces how to create or customize an enclave in the Penglai-TVM, such as how to configure the enclave parameters and what is the usage of each enclave-side/host-side interface, etc.
+This doc introduces how to create or customize an enclave in the Penglai-TVM, such as how to configure the enclave parameters in Penglai sdk and what's the usage of each enclave-side / host-side interface, etc.
 
-Penglai-TVM is a scalable enclave system on RISC-V, which realizes the fine-grained and scalable memory management. We leverage the RISC-V feature: Trap Virtual Memory to implement the Guard Page Table with pure software design. More details of Guard Page Table can be found in our OSDI paper: "Scalable memory protection in PENGLAI Enclave".
+Penglai-TVM is a scalable enclave system on RISC-V, which realizes the fine-grained and scalable memory management. We leverage the RISC-V feature: Trap Virtual Memory (TVM) to implement the Guard Page Table with pure software design. More details of Guard Page Table can be found in our [OSDI paper](https://ipads.se.sjtu.edu.cn/zh/publications/FengOSDI21-preprint.pdf).
 
 ### File Structure
 
@@ -41,7 +41,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: This function is used to initialize the enclave metadata.
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
+    + PLenclave: enclave structure used in the host program.
 
 + **PLenclave_create**
 
@@ -51,9 +51,9 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Create an enclave with the given parameters and enclave file.
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
-    + u_elffile: The elf file structure of the created enclave.
-    + u_param: The user-given parameters to create an enclave.
+    + PLenclave: enclave structure used in the host program.
+    + u_elffile: the elf file structure of the created enclave.
+    + u_param: user-given parameters to create an enclave.
 
 + **PLenclave_run**
 
@@ -63,7 +63,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Run an enclave, this function will not return unless (1) enclave is finished, stopped or destroyed, (2) enclave triggers an ocall which needs to be handled in the user mode (host).
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
+    + PLenclave: enclave structure used in the host program.
 
 + **PLenclave_attest**
 
@@ -73,8 +73,8 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Get the attestation report according to the given nonce
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
-    + nonce: The attestation nonce.
+    + PLenclave: enclave structure used in the host program.
+    + nonce: attestation nonce.
 
 + **PLenclave_stop**
 
@@ -84,7 +84,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Stop a running enclave. The host can stop a running enclave compulsorily, So the DoS attacks from the untrusted host are out of scope.
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
+    + PLenclave: enclave structure used in the host program.
 
 + **PLenclave_resume**
 
@@ -94,7 +94,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Resume a stopped enclave. An enclave can continue to run from the point it exits last time.
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
+    + PLenclave: enclave structure used in the host program.
   
 + **PLenclave_destroy**
 
@@ -104,7 +104,7 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
 
   + Description: Destroy an enclave. The host can destroy a running enclave compulsorily, e.g., when receiving a kill signal. DoS attacks are out of scope.
   + Parameter:
-    + PLenclave: Enclave structure used in the host program.
+    + PLenclave: enclave structure used in the host program.
 
 #### Enclave paremeter interfaces
 
@@ -118,8 +118,8 @@ void elf_args_init(struct elf_args* elf_args, char *filename)
 
 + Description: Initialize the elf structure with the given filename.
 + Parameter:
-  + elf_args: Elf structure used in the host program.
-  + filename: Enclave file name.
+  + elf_args: elf structure used in the host program.
+  + filename: enclave file name.
 
 **elf_args_destroy**
 
@@ -129,7 +129,7 @@ void elf_args_destroy(struct elf_args* elf_args)
 
 + Description: Reclaim the elf resource.
 + Parameter:
-  + elf_args: Elf structure used in the host program.
+  + elf_args: elf structure used in the host program.
 
 **enclave_args_init**
 
@@ -139,7 +139,7 @@ void enclave_args_init(struct enclave_args* enclave_args)
 
 + Description: Initialize the enclave arguments.
 + Parameter:
-  + enclave_args: Enclave argument structure used in the host program.
+  + enclave_args: enclave argument structure used in the host program.
 
 **PLenclave_set_shm**
 
@@ -149,10 +149,10 @@ int PLenclave_set_shm(struct PLenclave *enclave, int shmid, uintptr_t offset, ui
 
 + Description: Configure the shared memory in the enclave creating parameters.
 + Parameter:
-  + enclave: Enclave structure used in the host program.
-  + shmid: The shared memory identification.
-  + offset: The offset in shared memory.
-  + size: Shared memory size.
+  + enclave: enclave structure used in the host program.
+  + shmid: shared memory identification.
+  + offset: offset in shared memory.
+  + size: shared memory size.
 
 **PLenclave_set_mem_arg**
 
@@ -162,10 +162,10 @@ int PLenclave_set_mem_arg(struct PLenclave *enclave, int id, uintptr_t offset, u
 
 + Description: Set the schrodinger pages in the enclave running parameters. The ownership of schrodinger pages is transferred when enclave runs.
 + Parameter:
-  + enclave: Enclave structure used in the host program.
-  + id: The schrodinger page identification.
-  + offset: The offset in schrodinger pages.
-  + size: Schrodinger page size.
+  + enclave: enclave structure used in the host program.
+  + id: schrodinger page identification.
+  + offset: offset in schrodinger pages.
+  + size: schrodinger page size.
 
 **PLenclave_set_rerun_arg**
 
@@ -175,8 +175,8 @@ int PLenclave_set_rerun_arg(struct PLenclave *enclave, int rerun_reason)
 
 + Description: Set the enclave re-run cause in its parameter.
 + Parameter:
-  + enclave: Enclave structure used in the host program.
-  + rerun_reason: The enlcave re-run cause.
+  + enclave: enclave structure used in the host program.
+  + rerun_reason: the cause for enclave to re-run.
 
 ##### Shared memory
 
@@ -188,8 +188,9 @@ int PLenclave_shmget(unsigned long size);
 
 + Description: Allocate the shared memory between the enclave and host, and return the shared memory identification.
 + Parameter:
-  + size: The shared memory size.
-+ Return value: The identification of the required shared memory
+  + size: shared memory size.
++ Return value: 
+  + shmid: the identification of the required shared memory
 
 **PLenclave_shmat**
 
@@ -199,9 +200,10 @@ void* PLenclave_shmat(int shmid, void* addr)
 
 + Description: Get the shared memory address with the given shmid. Map this shared memory into host VA space.
 + Parameter:
-  + shmid: The shared memory identification.
-  + addr: Shared memory address. 0 (default) means shared memory can map at any available virtual address in the VA space of the host.
-+ Return value: the virtual address of the shared memory.
+  + shmid: shared memory identification.
+  + addr: shared memory address. 0 (default) means shared memory can map at any available virtual address in the VA space of the host.
++ Return value: 
+  + addr: the virtual address of the shared memory.
 
 **PLenclave_shmdt**
 
@@ -211,8 +213,8 @@ int PLenclave_shmdt(int shmid, void* addr)
 
 + Description: Unmap the shared memory in the host VA space with the given shmid. However, the shared memory id is not deallocated, so others can still use this shmid to get the corresponidng shared memory.
 + Parameter:
-  + shmid: The shared memory identification.
-  + addr: Shared memory address.
+  + shmid: shared memory identification.
+  + addr: shared memory address.
 
 **PLenclave_shmctl**
 
@@ -222,7 +224,7 @@ int PLenclave_shmctl(int shmid)
 
 + Description: Reclaim the shared memory identification. The host cannot use this shmid to get the corresponding shared memory any longer.
 + Parameter:
-  + shmid: The shared memory identification.
+  + shmid: shared memory identification.
 
 ##### Schrodinger/Relay page (Zero-copy mechanism)
 
@@ -234,8 +236,9 @@ int PLenclave_schrodinger_get(unsigned long size)
 
 + Description: Allocate the schrodinger page between the enclave and host (achieve the zero copy communication), and return its identification.
 + Parameter:
-  + size: The schrodinger page size.
-+ Return value: the schrodinger page id.
+  + size: schrodinger page size.
++ Return value: 
+  + schrodinger_id: schrodinger page identification.
 
 **PLenclave_schrodinger_at**
 
@@ -245,9 +248,10 @@ void* PLenclave_schrodinger_at(int id, void* addr)
 
 + Description: Get the schrodinger page address with the given id. Map these schrodinger pages into host VA space.
 + Parameter:
-  + id: The schrodinger page identification.
+  + id: schrodinger page identification.
   + addr: schrodinger page address. 0 means the schrodinger page can map at any available virtual address in the VA space of the host.
-+ Return value: the virtual address of the schrodinger pages.
++ Return value: 
+  + addr: the virtual address of the schrodinger pages.
 
 **PLenclave_schrodinger_dt**
 
@@ -257,7 +261,7 @@ int PLenclave_schrodinger_dt(int id, void* addr)
 
 + Description: Unmap the schrodinger pages in the host VA space with the given shmid. However, the schrodinger page id is not deallocated, so others can still use this id to get the corresponidng schrodinger pages.
 + Parameter:
-  + id: The schrodinger page identification.
+  + id: schrodinger page identification.
   + addr: schrodinger page address.
 
 **PLenclave_schrodinger_ctl**
@@ -268,7 +272,7 @@ int PLenclave_schrodinger_ctl(int id)
 
 + Description: Reclaim the schrodinger page identification. The host cannot use this id to get the corresponding schrodinger pages any longer.
 + Parameter:
-  + id: The schrodinger page identification.
+  + id: schrodinger page identification.
 
 ### Enclave-side interface
 
@@ -304,7 +308,7 @@ void EAPP_RETURN(unsigned long retval) __attribute__((noreturn))
 
 + Description: Exit an enclave and give the return value.
 + Parameter:
-  + retval: Return value.
+  + retval: return value.
 
 **EAPP_GET_ENCLAVE_ID**
 
@@ -312,8 +316,9 @@ void EAPP_RETURN(unsigned long retval) __attribute__((noreturn))
 unsigned long get_enclave_id()
 ```
 
-+ Description: Get enclave id .
-+ Return value: the enclave id.
++ Description: Get the current enclave identification.
++ Return value: 
+  + eid: enclave id.
 
 **EAPP_MMAP**
 
@@ -323,9 +328,10 @@ void* eapp_mmap(void* vaddr, unsigned long size)
 
 + Description: Allocate the enclave memory and map it in the enclave VA space. These memory can be used as the relay pages in enclave (zero-copy communication between enclaves).
 + Parameter:
-  + vaddr: Must set NULL in the current version.
-  + size: Memory mapping size 
-+ Return value: The virtual address for mapped memory.
+  + vaddr: set NULL in the current version.
+  + size: memory mapping size 
++ Return value: 
+  + addr: the virtual address for mapped memory.
 
 **EAPP_UNMAP**
 
@@ -335,8 +341,8 @@ int eapp_unmap(void* vaddr, unsigned long size)
 
 + Description: Unmap the enclave memory. The unmapped memory must be allocated with the `eapp_mmap()`.
 + Parameter:
-  + vaddr: The unmapped memory virtual address.
-  + size: Unmapped memory size.
+  + vaddr: the virtual address of memory which is going to unmap.
+  + size: unmapped memory size.
 
 **EAPP_ACQUIRE_ENCLAVE**
 
@@ -346,8 +352,9 @@ unsigned long acquire_enclave(char* name)
 
 + Description: Acquire the server enclave handler with the given enclave name. The enclave handler can be used in enclave call.
 + Parameter:
-  + name: The enclave name.
-+ Return value: Enclave handler.
+  + name: enclave name.
++ Return value: 
+  + handler: enclave handler.
 
 **EAPP_CALL_ENCLAVE**
 
@@ -357,8 +364,8 @@ int call_enclave(unsigned long handle, struct call_enclave_arg_t* arg)
 
 + Description: Synchronous enclave call. A caller enclave can use this interface to call other enclaves. Caller enclave must wait until the callee enclave returns.
 + Parameter:
-  + handle: The callee enclave handler.
-  + arg: The IPC structure.
+  + handle: callee enclave handler.
+  + arg: IPC structure.
 
 **EAPP_ASYN_ENCLAVE_CALL**
 
@@ -368,8 +375,8 @@ int asyn_enclave_call(char* name, struct call_enclave_arg_t *arg)
 
 + Description: Asynchronous enclave call. A caller enclave can use this interface to pass the IPC arguments to the callee enclave. The caller enclave will continue to run and callee enclave will receive the IPC arguments when it creates.
 + Parameter:
-  + name: The callee enclave name.
-  + arg: The IPC structure.
+  + name: callee enclave name.
+  + arg: IPC structure.
 
 **SERVER_RETURN**
 
@@ -379,7 +386,7 @@ void SERVER_RETURN(struct call_enclave_arg_t *arg) __attribute__((noreturn))
 
 + Description: Callee enclave calls this function to return back to the caller enclave, and transfers the return IPC structure in the meantime.
 + Parameter:
-  + arg: The IPC structure.
+  + arg: IPC structure.
 
 **EAPP_ENCLAVE_REPORT**
 
@@ -389,9 +396,9 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 
 + Description: Get the enclave attestation report. If name is set, it will return the enclave report with the given name, otherwise, it will return the attestation report of the current enclave. 
 + Parameter:
-  + name: The attested enclave name.
-  + report: The attestation report structure, the monitor later will fill this structure.
-  + nonce: The attestation nonce.
+  + name: attested enclave name.
+  + report: attestation report structure, the monitor will fill this structure later.
+  + nonce: attestation nonce.
 
 ### Configuration
 
@@ -453,7 +460,7 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 + **ENCLAVE_DEFAULT_KBUFFER**
 
   + Description:
-    + Shared memory between the kernel and enclave: 0xffffffe000000000UL
+    + The start address of shared memory between kernel and enclave: 0xffffffe000000000UL
   + Defined file:
     + `/Penglai-Opensbi-TVM/include/sm/enclave_vm.h`
     + `/Penglai-sdk-TVM/lib/app/include/ocall.h`
@@ -462,7 +469,7 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 + **ENCLAVE_DEFAULT_KBUFFER_SIZE**
 
   + Description:
-    + Shared memory size between the kernel and enclave: 1K
+    + The default size of the shared memory between the kernel and enclave: 1K
   + Defined file:
     + `/Penglai-Opensbi-TVM/include/sm/enclave_vm.h`
     + `/Penglai-sdk-TVM/lib/app/include/ocall.h`
@@ -471,7 +478,7 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 + **ENCLAVE_DEFAULT_SHM_BASE**
 
   + Description:
-    + Shared memory start address in the enclave VA space: 0x0000003900000000UL
+    + Shared memory between host and enclave, the default start address in the enclave VA space: 0x0000003900000000UL
   + Defined file:
     + `/Penglai-Opensbi-TVM/include/sm/enclave_vm.h`
 
@@ -507,21 +514,21 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 + **DEFAULT_SHADOW_ENCLAVE_ORDER**
 
   + Description:
-    + The initialized page order of shadow enclave. These pages will be used to create a shadow enclave instance later
+    + The initialized page order of shadow enclave. These pages will be used to create a shadow enclave instance (used as heap and stack memory) later
   + Defined file:
     + `/Penglai-sdk-TVM/enclave-driver/penglai-enclave.h`
 
 + **DEFAULT_SECURE_PAGES_ORDER**
 
   + Description:
-    + The page order of secure memory. Penglai driver transfers a a range of memory into monitor, when secure memory held by monitor is exhausted.
+    + The page order of secure memory. Penglai driver transfers a range of memory into monitor (used as secure memory), when secure memory held by monitor is exhausted.
   + Defined file:
     + `/Penglai-sdk-TVM/enclave-driver/penglai-enclave.h`
   
 + **DEFAULT_SCHRODINGER_ORDER**
 
   + Description:
-    + The page order of zero-copy communication page. Penglai driver allocates all the schrodinger pages  when it initializes. Later, these  pages will be assigned to each enclave if needed.  
+    + The page order of zero-copy communication pages. Penglai driver allocates all the schrodinger pages when it initializes. These pages will be assigned to each enclave if needed (as its schrodinger pages).  
   + Defined file:
     + `/Penglai-sdk-TVM/enclave-driver/penglai-schrodinger.h`
 

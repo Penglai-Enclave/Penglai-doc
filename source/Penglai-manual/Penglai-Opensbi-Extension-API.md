@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This document describes the interfaces for Opensbi used by PENGLAI enclave. It contains two parts: one kind of interfaces are called by the host kernel (Host-side SBI extension); Others are invoked by enclaves (Enclave-side SBI extension).
+This document describes the interfaces for Opensbi used by PENGLAI enclave. It contains two parts: one is called by the host kernel (Host-side SBI extension); Another is invoked by enclaves (Enclave-side SBI extension).
 
 ### Host-side SBI extension for  Penglai enclave
 
@@ -60,10 +60,10 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   uintptr_t sbi_create_enclave(struct enclave_create_param *enclave_create_param)
   ```
 
-  Create an enclave with the given arguments, monitor will initialize the enclave metadata, but will not run the enclave. 
+  Create an enclave with the given arguments, monitor will initialize the enclave metadata, but will not run this enclave. 
 
   + Arguments:
-    + enclave_create_param: the struct of the enclave creating parameters.
+    + enclave_create_param: struct of the enclave creating parameters.
 
   **SBI_ATTEST_ENCLAVE （FID #98）**
 
@@ -97,7 +97,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
 
   + Arguments:
     + eid: attested enclave id
-    + report: the struct pointer of attestation report, host will receive this report after attestation.
+    + report: struct pointer of attestation report, host will receive this report after attestation.
     + nonce: attestation nonce
 
   **SBI_RUN_ENCLAVE （FID #97）**
@@ -119,8 +119,8 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + eid: the given enclave id
-    + enclave_run_args: the struct of enclave running parameters
+    + eid: given enclave id
+    + enclave_run_args: struct of enclave running parameters
 
   **SBI_STOP_ENCLAVE （FID #96）**
 
@@ -132,7 +132,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + eid: the given enclave id 
+    + eid: given enclave id 
 
   **SBI_RESUME_ENCLAVE （FID #95）**
 
@@ -164,7 +164,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments
-    + eid: the given enclave id.
+    + eid: given enclave id.
 
   
 
@@ -218,7 +218,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
 
   **SBI_EXIT_ENCLAVE （FID #1）**
 
-  Enclave exits and returns to the host. Monitor clear the enclave metadata and free all its resource.
+  Enclave exits and returns to the host. Monitor clears the enclave metadata and frees all its resource.
 
   ```c
   // retval->a0
@@ -226,11 +226,11 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + retval: the enclave return value.
+    + retval: enclave return value.
 
   **SBI_ENCLAVE_OCALL （FID #2）**
 
-  Enclave ocall functions, enclave uses ocall to leverage the functionalities in host kernel. Monitor will switch CPU status from enclave to host.
+  Enclave ocall functions, enclave uses ocall to invoke the functionalities in host kernel. Monitor will switch CPU status from enclave to host.
 
   ```c
   // ocall_id->a0, arg0->a1, arg1->a2 
@@ -239,14 +239,14 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + ocall_id: the ocall function id.
-    + arg0...: the ocall call arguments.
+    + ocall_id: ocall function id.
+    + arg0...: ocall call arguments.
   + Return value:
-    + ENCLAVE_OCALL: tell the host kernel that enclave is exit to handle the ocall function. The return value will be set in the `a1` register later.
+    + ocall_return_value: the return value of ocall function (non-return value is also allowed).
 
   **SBI_ACQUIRE_ENCLAVE （FID #3）**
 
-  A caller enclave uses this interface to get the handler for other enclaves with their enclave name. Monitor reserves each enclave name and ensures that each enclave name is unique.
+  A caller enclave uses this interface to get the handler of other enclaves with their enclave name. The enclave handler can be used to call another enclave. Monitor already reserves each server enclave name (when server enclave creates) and ensures that each enclave name is unique.
 
   ```c
   // acquired_name->a0 
@@ -258,11 +258,11 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
 
     + enclave_name: acquired enclave name
   + Return value:
-    + eid : acquired enclave id, assign it to the `a1` register as the return value (`a0` = SBI_OK, `a1` = return value) 
+    + handler : acquired enclave handler (enclave identification as well).
 
   **SBI_CALL_ENCLAVE （FID #4）**
 
-  After getting the callee enclave handler with its enclave name. The caller enclave can trigger an inter-enclave communication between caller and callee enclave, which is defined as enclave call. Monitor can adopt different IPC mechanisms, and switch from caller enclave to the callee enclave directly.
+  After getting the callee enclave handler with the given name. A caller enclave can trigger an inter-enclave communication between caller and callee enclave, which is defined as synchronous enclave call. Monitor can adopt different IPC mechanisms, and switch the running context from caller enclave to the callee enclave directly.
 
   ```c
   struct call_enclave_arg
@@ -282,12 +282,12 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   +  Arguments:
-    + eid: the callee enclave id
-    + call_arg: the call struct which contains the IPC register and memory ranges
+    + eid: callee enclave id
+    + call_arg: IPC struct which contains the register and memory ranges
 
   **SBI_ENCLAVE_RETURN （FID #5）**
 
-  When callee enclave exits and returns to the caller enclave, it needs to invoke this function. Monitor will switch from callee enclave to the caller enclave, and return back the resource owned by the caller enclave preciously.
+  When callee enclave exits and returns to the caller enclave, it needs to invoke this function. Monitor will switch running context from callee enclave to the caller enclave, and give back the resource owned by the caller enclave preciously.
 
   ```c
   struct call_enclave_arg
@@ -307,7 +307,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + return_arg: the return struct which contains the IPC register and memory ranges
+    + return_arg: return IPC struct which contains register and memory range
 
   **SBI_GET_REPORT（FID #11）**
 
@@ -340,13 +340,13 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   ```
 
   + Arguments:
-    + name: the attested enclave name, NULL for current enclave itself.
-    + report: the attestation report structure, after the invocation, the attestation report will be filled in this structure.
-    + nonce: the nonce of this attestation request.
+    + name: attested enclave name, NULL for current enclave itself.
+    + report: attestation report structure, after invocation, the attestation report will be filled into this structure.
+    + nonce: the nonce of attestation request.
 
 + **SBI return value:**
   
-  The return value for enclave-side SBI call resides in the `a0`. We do not use the standard SBI return structure (`a0` for SBI_ERROR and `a1` for SBI return value), as we need to support the return value for a syscall.
+  Currently, the return value for enclave-side SBI call resides in the `a0`. We do not use the standard SBI return structure (`a0` for SBI_ERROR and `a1` for SBI return value), as we need to support the return value for a syscall.
   
   If enclave-side SBI call is failed, the return value is a negative error number. If an enclave-side SBI call does not have a return value and return successfully, the return value will be set to zero.
 
