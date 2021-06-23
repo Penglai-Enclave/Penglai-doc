@@ -1,5 +1,5 @@
-IPC for enclave-enclave and enclave-host (Penglai-TVM)
-========================================================
+IPC between Enclave-Enclave and Enclave-Host (Penglai-TVM)
+============================================================
 
 This tutorial introduces how to implement the IPC between the enclave-enclave and enclave-host in the Penglai-TVM. 
 Basically, there are two methods to implement the IPC: the shared buffer and ownership transfer. We will introduce both these two methods in the tutorial.

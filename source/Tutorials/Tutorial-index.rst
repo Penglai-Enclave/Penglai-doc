@@ -1,8 +1,10 @@
 Tutorials
 ==========
-Penglai has several tutorials on how to write enclaves using the basic functionalities provided in Penglai-sdk.
+Penglai has several tutorials on how to run enclaves with the basic functionalities provided in Penglai-sdk.
 
-Penglai-TVM has more functionalities than Penglai-PMP, some tutorials can only be run in the Penglai-TVM.
+Penglai-TVM has more functionalities than Penglai-PMP, some tutorials can only be run in Penglai-TVM. 
+
+Penglai-PMP tutorials are coming soon.
 
 .. toctree::
     :maxdepth: 1
