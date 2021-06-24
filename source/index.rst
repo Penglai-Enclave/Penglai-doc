@@ -18,14 +18,16 @@ Penglai contains a set of systems satisfying different scenarios.
 
 + Penglai-TVM: it is based on OpenSBI, supports fine-grained isolation (page-level isolation) between untrusted host and enclaves. The code is maintained in Penglai-TVM_.
 
++ Penglai-sPMP/PMP: it can utilize either PMP or our sPMP (S-mode PMP) proposal to provide basic enclave functionalities. Refer Penglai-sPMP_ for more info. A version based on OpenSBI for Nuclei devices is maintained in Nuclei-SDK_.
+
 + Penglai-MCU: it supports Global Platform, and PSA now. Not open-sourced. Refer Penglai-MCU_ for more info.
 
-+ Penglai-sPMP: it utilizes our sPMP (S-mode PMP) proposal to provide basic enclave functionalities. A version based on OpenSBI for Nuclei devices is maintained in Nuclei-SDK_. Another version based on old BBL is available in sPMP_.
 
 .. _Penglai-TVM: https://github.com/Penglai-Enclave/Penglai-Enclave-TVM
 .. _Penglai-MCU: https://github.com/Penglai-Enclave/#
 .. _Nuclei-SDK: https://github.com/Nuclei-Software/nuclei-linux-sdk/tree/dev_flash_penglai_spmp
 .. _sPMP: https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP
+.. _Penglai-sPMP: https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP
 
 
 .. toctree::
