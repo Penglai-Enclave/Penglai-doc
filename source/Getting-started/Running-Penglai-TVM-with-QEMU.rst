@@ -44,7 +44,7 @@ Enter the ``Penglai-Enclave-TVM`` directory
 Typing,
 :: 
   
-    ./docker_cmd qemu
+    ./docker_cmd.sh qemu
 
 If everything is fine, you will enter a Linux terminal booted by Qemu with Penglai-installed.
 

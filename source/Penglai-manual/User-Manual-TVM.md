@@ -102,7 +102,17 @@ There are three key submodules in Penglai: Linux (with Guarded Page Table suppor
   int PLenclave_destroy(struct PLenclave *PLenclave)
   ```
 
-  + Description: Destroy an enclave. The host can destroy a running enclave compulsorily, e.g., when receiving a kill signal. DoS attacks are out of scope.
+  + Description: Destroy an enclave. Enclave driver and secure monitor will free the enclave resource and metadata. Host can destroy a running enclave compulsorily, e.g., when receiving a kill signal. DoS attacks are out of scope. Notably, if an enclave exits successfully, host does not need to call `PLenclave_destroy` any more, as the metadata and resource of the enclave will be released in the exiting procedure.
+  + Parameter:
+    + PLenclave: enclave structure used in the host program.
+
++ **PLenclave_destruct**
+
+  ```c
+  int PLenclave_destruct(struct PLenclave *PLenclave)
+  ```
+
+  + Description: Destruct an enclave structure and its metadata. Currently, it just closes the file description of enclave driver, which is opened in `PLenclave_init`.
   + Parameter:
     + PLenclave: enclave structure used in the host program.
 
@@ -445,7 +455,7 @@ int EAPP_GET_REPORT(char * name, struct report_t *report, unsigned long nonce)
 + **ENCLAVE_DEFAULT_STACK_SIZE**
 
   + Description: 
-    + Default enclave stack size: 8K
+    + Default enclave stack size: 64K
   + Defined file:
     + `/Penglai-sdk-TVM/lib/host/include/param.h`
     + `/Penglai-Opensbi-TVM/include/sm/enclave_vm.h`
