@@ -144,7 +144,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
   #define RESUME_FROM_OCALL        2  
   
   // eid->a0, resume_func_id->a1
-    uintptr_t sbi_resume_enclave(unsigned long eid, unsigned long resume_func_di);
+    uintptr_t sbi_resume_enclave(unsigned long eid, unsigned long resume_func_id);
   ```
 
   + Arguments:
