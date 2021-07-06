@@ -1,8 +1,8 @@
 Shadow enclave (Penglai-TVM)
 ==============================
 
-This tutorial introduces the server enclave in Penglai. Server enclave is a special type of enclave, it will not run until other enclaves call it.
-With the server enclave, we can implement an enclave chain in the Penglai. Server enclave can act as a separate library or OS server, etc.
+This tutorial introduces the shadow enclave in Penglai. Shadow enclave is a clean template, another enclave can fork from the shadow enclave to achieve fast boot.
+Shadow enclave is suitable for the scenario that needs to auto-scale multiple enclave instances with single source code. 
 
 Prerequisite
 -------------
