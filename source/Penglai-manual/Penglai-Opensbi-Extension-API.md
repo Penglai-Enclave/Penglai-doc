@@ -198,7 +198,7 @@ This document describes the interfaces for Opensbi used by PENGLAI enclave. It c
 + **S+U enclave**
 
   + Extension id: 0x100101
-  + Use the sbi trap of CAUSE_HYPERVISOR_ECALL.
+  + Use the sbi trap of CAUSE_SUPERVISOR_ECALL.
   
 + **U enclave**
 
